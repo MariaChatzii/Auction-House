@@ -6,6 +6,5 @@ public class Main {
         ArrayList<Item> itemsForSelling = new InputFileReader().readActions();
         for(Item item: itemsForSelling)
             System.out.println(item.code);
-
     }
 }
