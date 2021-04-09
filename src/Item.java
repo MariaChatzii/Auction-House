@@ -14,6 +14,16 @@ public class Item {
 		bids.add(bid);
 	}
 
+	public void removeInvalidBids(){
+		float maxBidPrice = bids.get(0).reservePrice;
+		for(BidAction bid : bids){
+			if(!bid.isWithinValidTime(sellingData.timestamp, sellingData.closeTime) || bid.reservePrice < maxBidPrice)
+				bids.remove(bid);
+			maxBidPrice = bid.reservePrice;
+		}
+	}
+
+
 
 
 	
