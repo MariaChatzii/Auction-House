@@ -10,8 +10,5 @@ public class BidAction extends Action{
 			return true;
 		return false;
 	}
-	
-	
-	
-
 }
+
