@@ -40,11 +40,12 @@ public class InputFileReader {
 				}
 			}
 			setItemHeartBeadMessage(itemsForSelling, heartBeatMessages);
+			reader.close();
 		    return itemsForSelling;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	public Item getItemByCode(@NotNull ArrayList<Item> items, String itemCode){

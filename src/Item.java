@@ -18,13 +18,10 @@ public class Item {
 		this.result = new Result();
 	}
 
-	public float getHighestBidPrice(){
-		return bids.get(bids.size()-1).price;
+	public String getCode() {
+		return code;
 	}
 
-	public float getLowestBidPrice(){
-		return bids.get(0).price;
-	}
 	public void setResult(){
 		result.setItemCode(code);
 		if(bids.size()!=0) {
@@ -39,6 +36,14 @@ public class Item {
 			result.setLowestBid(0);
 			setNoWinnerData();
 		}
+	}
+
+	public float getHighestBidPrice(){
+		return bids.get(bids.size()-1).price;
+	}
+
+	public float getLowestBidPrice(){
+		return bids.get(0).price;
 	}
 
 	public void removeInvalidTimeBids(){

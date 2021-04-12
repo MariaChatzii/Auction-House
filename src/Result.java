@@ -14,8 +14,36 @@ public class Result {
                    + highestBid);
     }
 
+    public int getCloseTime() {
+        return closeTime;
+    }
+
+    public String getItemCode() {
+        return itemCode;
+    }
+
+    public int getWinnerId() {
+        return winnerId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public float getPricePaid() {
         return pricePaid;
+    }
+
+    public int getTotalBidCount() {
+        return totalBidCount;
+    }
+
+    public float getLowestBid() {
+        return lowestBid;
+    }
+
+    public float getHighestBid() {
+        return highestBid;
     }
 
     public void setCloseTime(int closeTime) {
