@@ -12,10 +12,12 @@ public class InputFileReader {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("Input.txt"));
 			ArrayList<Item> itemsForSelling = new ArrayList<>();
+			ArrayList<Integer> heartBeatMessages = new ArrayList<>();
 			String line;
 			while((line = reader.readLine())!=null) {
 				String[] lineData;
 				lineData = line.split("\\|");
+
 				if(lineData.length - 2 == SellAction.class.getFields().length && lineData[2].equals(SELL)){ //Sell Action
 					int timestamp = Integer.parseInt(lineData[0]);
 					int userId = Integer.parseInt(lineData[1]);
@@ -25,24 +27,20 @@ public class InputFileReader {
 
 				    itemsForSelling.add(new Item(itemCode, new SellAction(timestamp, userId, reservePrice, closeTime)));
 				}
-				else if(lineData.length - 2 == BidAction.class.getFields().length && lineData[2].equals(BID)){ //Bid Action
+				else if(lineData.length - 1 == BidAction.class.getFields().length && lineData[2].equals(BID)){ //Bid Action
 					int timestamp = Integer.parseInt(lineData[0]);
 					int userId = Integer.parseInt(lineData[1]);
 					String itemCode = lineData[3];
 					float reservePrice = Float.parseFloat(lineData[4]);
 
-					getItemByCode(itemsForSelling, itemCode).addBid(new BidAction(timestamp, userId, reservePrice));
+					getItemByCode(itemsForSelling, itemCode).add(new BidAction(timestamp, userId, reservePrice));
 				}
-				/*else if(lineData.length == 1) { //HeartBeat messages
-					int timestamp = Integer.parseInt(lineData[0]);
-					if(!isAllItemsClosedTimePassed(itemsForSelling, timestamp)) {
-
-					}
-				}*/
+				else{ //HeartBeat Messages
+					heartBeatMessages.add(Integer.parseInt(lineData[0]));
+				}
 			}
-			return itemsForSelling;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			setItemHeartBeadMessage(itemsForSelling, heartBeatMessages);
+		    return itemsForSelling;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,11 +54,11 @@ public class InputFileReader {
 		return null;
 	}
 
-	public Boolean isAllItemsClosedTimePassed(ArrayList<Item> items, int currentTimestamp){
+	public void setItemHeartBeadMessage(ArrayList<Item> items, ArrayList<Integer> heartBreakMessages){
 		for(Item item : items)
-			if(item.sellingData.closeTime >= currentTimestamp)
-				return false;
-		return true;
+			for(Integer message : heartBreakMessages)
+				if(!item.isWithinValidTime(message,item.sellingData.timestamp, item.sellingData.closeTime))
+					item.heartBeatMessage = message;
 	}
 		
 }

@@ -2,12 +2,12 @@
 abstract public class Action {
     public int timestamp;
     public int userId;
-    public float reservePrice;
+    public float price;
 
-    public Action(int timestamp, int userId, float reservePrice) {
+    public Action(int timestamp, int userId, float price) {
 		this.timestamp = timestamp;
 		this.userId = userId;
-		this.reservePrice = reservePrice;
+		this.price = price;
 	}
 	
 }
