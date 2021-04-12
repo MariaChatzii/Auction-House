@@ -18,8 +18,8 @@ public class OutputFileWriter {
                 }else{
                     writer.write(result.getWinnerId()+"|");
                 }
-                writer.write(result.getStatus() + "|" + result.getPricePaid() + "|" + result.getTotalBidCount() + "|" +
-                        result.getHighestBid() + "|" + result.getLowestBid() + "\n");
+                writer.write(result.getStatus() + "|" + String.format("%.02f", result.getPricePaid()) + "|" + result.getTotalBidCount() + "|" +
+                        String.format("%.02f", result.getHighestBid()) + "|" + String.format("%.02f", result.getLowestBid()) + "\n");
             }
             writer.close();
         } catch (IOException e) {
