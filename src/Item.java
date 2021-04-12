@@ -27,8 +27,8 @@ public class Item {
 		if(bids.size()!=0) {
 			Collections.sort(bids, BidAction.sortByPrice);
 			removeInvalidTimeBids();
-			result.setLowestBid(getHighestBidPrice());
-			result.setHighestBid(getLowestBidPrice());
+			result.setLowestBid(getLowestBidPrice());
+			result.setHighestBid(getHighestBidPrice());
 			result.setTotalBidCount(bids.size());
 			setResultData();
 		}else {
