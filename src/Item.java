@@ -28,11 +28,7 @@ public class Item {
 	public void setResult(){
 		result.setItemCode(code);
 		if(bids.size()!=0) {
-			System.out.println("bids size = "+bids.size());
 			Collections.sort(bids, BidAction.sortByPrice);
-			for(int i=0;i<bids.size();i++){
-				System.out.println(bids.get(i).price);
-			}
 			removeInvalidTimeBids();
 			result.setLowestBid(getHighestBidPrice());
 			result.setHighestBid(getLowestBidPrice());
@@ -60,6 +56,7 @@ public class Item {
 		result.setWinnerId(NO_WINNER_ID);
 		result.setStatus(UNSOLD);
 		result.setPricePaid(0);
+		result.setCloseTime(getResultCloseTime(0));
 	}
 
 	public void setResultData(){

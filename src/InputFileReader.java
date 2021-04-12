@@ -57,7 +57,7 @@ public class InputFileReader {
 	public void setItemHeartBeadMessage(ArrayList<Item> items, ArrayList<Integer> heartBreakMessages){
 		for(Item item : items)
 			for(Integer message : heartBreakMessages)
-				if(!item.isWithinValidTime(message,item.sellingData.timestamp, item.sellingData.closeTime))
+				if (item.isWithinValidTime(message, item.sellingData.timestamp, item.sellingData.closeTime))
 					item.heartBeatMessage = message;
 	}
 		
