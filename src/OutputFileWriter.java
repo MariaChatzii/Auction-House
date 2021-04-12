@@ -12,7 +12,7 @@ public class OutputFileWriter {
             FileWriter writer = new FileWriter(new File("auctionResult.txt"));
             for(Item item : itemsForSell) {
                 Result result = item.result;
-                writer.write(result.getCloseTime() + "|" + item.getCode()+ "|");
+                writer.write(result.getCloseTime() + "|" + result.getItemCode()+ "|");
                 if(result.getWinnerId() == NO_WINNER_ID){
                     writer.write("" + "|");
                 }else{
