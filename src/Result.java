@@ -8,12 +8,6 @@ public class Result {
     private float lowestBid;
     private float highestBid;
 
-    public void printResult(){
-        System.out.println("close_time: " + closeTime + "\nitem_code: " + itemCode + "\nwinner_id: " + winnerId + "\nstatus: " + status
-                   + "\nprice_paid: " + pricePaid + "\ntotal_bid_count:" + totalBidCount + "\nlowest_bid: " + lowestBid + "\nhighest_bid: "
-                   + highestBid);
-    }
-
     public int getCloseTime() {
         return closeTime;
     }

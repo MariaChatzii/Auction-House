@@ -1,6 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.Comparator;
 
 public class BidAction extends Action{
@@ -9,16 +6,12 @@ public class BidAction extends Action{
 		super(timestamp, userId, bidPrice);
 	}
 
-	public static Comparator<BidAction> sortByPrice = new Comparator<BidAction>() {
-
-		@Override
-		public int compare(BidAction bid1, BidAction bid2) {
-			//sort in ascending order
-			int result =  Float.compare(bid1.price, bid2.price);
-			if(result == 0)
-				result =  Float.compare(bid1.timestamp, bid2.timestamp);
-			return result;
-		}
+	public static Comparator<BidAction> sortByPrice = (bid1, bid2) -> {
+		//sort in ascending order
+		int result =  Float.compare(bid1.getPrice(), bid2.getPrice());
+		if(result == 0)
+			result =  Float.compare(bid1.getTimestamp(), bid2.getTimestamp());
+		return result;
 	};
 }
 
