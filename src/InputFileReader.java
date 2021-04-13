@@ -64,7 +64,7 @@ public class InputFileReader {
 		//(within the item valid time) is stored.
 		for(Item item : items)
 			for(Integer message : heartBreakMessages)
-				if (item.isWithinValidTime(message, item.getSellingData().getTimestamp(), item.getSellingData().getCloseTime()))
+				if (Item.isWithinValidTime(message, item.getSellingData().getTimestamp(), item.getSellingData().getCloseTime()))
 					item.setHeartBeatMessage(message);
 	}
 		
