@@ -8,7 +8,7 @@ public class Item {
 
 	private final String code;
 	private final SellAction sellingData;
-	private final ArrayList<BidAction> bids = new ArrayList<>();
+	private ArrayList<BidAction> bids = new ArrayList<>();
 	private final Result result;
 	private int heartBeatMessage;
 
@@ -28,6 +28,10 @@ public class Item {
 
 	public Result getResult() {
 		return result;
+	}
+
+	public void setBids(ArrayList<BidAction> bids){
+		this.bids = bids;
 	}
 
 	public void setHeartBeatMessage(int heartBeatMessage) {
@@ -118,7 +122,7 @@ public class Item {
 		return Math.max(heartBeatMessage, winnerBidTimestamp);
 	}
 
-	public boolean isWithinValidTime(int timestampToCheck, int auctionStartedTime, int auctionClosedTime){
+	public static boolean isWithinValidTime(int timestampToCheck, int auctionStartedTime, int auctionClosedTime){
 		return timestampToCheck > auctionStartedTime && timestampToCheck <= auctionClosedTime;
 	}
 
