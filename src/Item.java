@@ -30,6 +30,10 @@ public class Item {
 		return result;
 	}
 
+	public ArrayList<BidAction> getBids(){
+		return bids;
+	}
+
 	public void setBids(ArrayList<BidAction> bids){
 		this.bids = bids;
 	}
@@ -127,7 +131,7 @@ public class Item {
 	}
 
 	public int totalBidsWithSameHighestPrice() {
-		return Collections.frequency(bids, bids.get(bids.size() - 1));
+		return (int) bids.stream().filter(bid -> (bid.getPrice() == bids.get(bids.size()-1).getPrice())).count();
 	}
 
 
