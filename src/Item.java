@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Item {
 	public static final String SOLD = "SOLD";
@@ -67,9 +66,10 @@ public class Item {
 	}
 
 	public void removeInvalidTimeBids(){
-		for(int i=0; i<bids.size();i++){
-			if(!isWithinValidTime(bids.get(i).getTimestamp(), sellingData.getTimestamp(), sellingData.getCloseTime()))
-				bids.remove(bids.get(i));
+		ArrayList<BidAction> bidsTemp = new ArrayList<>(bids);
+		for (BidAction bid : bidsTemp) {
+			if (!isWithinValidTime(bid.getTimestamp(), sellingData.getTimestamp(), sellingData.getCloseTime()))
+				bids.remove(bid);
 		}
 	}
 
@@ -133,7 +133,6 @@ public class Item {
 	public int totalBidsWithSameHighestPrice() {
 		return (int) bids.stream().filter(bid -> (bid.getPrice() == bids.get(bids.size()-1).getPrice())).count();
 	}
-
 
 	public void add(BidAction bidAction) {
 		bids.add(bidAction);
