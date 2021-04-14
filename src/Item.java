@@ -83,7 +83,7 @@ public class Item {
 	public void setResultData(){
 		if(!bids.isEmpty()) { //There are valid bids
 			if (bids.size() == 1) {
-				if(result.getPricePaid() >= sellingData.getPrice()) {
+				if(bids.get(0).getPrice() >= sellingData.getPrice()) {
 					result.setPricePaid(sellingData.getPrice());
 					setWinnerData(0);
 				}else{
