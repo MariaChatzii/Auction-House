@@ -186,6 +186,33 @@ class ItemTest {
 
     @Test
     void setResult(){
+        ArrayList<BidAction> bidsTemp = new ArrayList<>();
+
+        bidsTemp.add(new BidAction(7, 4, 500));
+        bidsTemp.add(new BidAction(8, 5,420));
+        bidsTemp.add(new BidAction(10,7,120));
+        bidsTemp.add(new BidAction(12,9, 500));
+        bidsTemp.add(new BidAction(16,3, 100));
+
+        SellAction sellingDataTemp = new SellAction(6,2,150,15);
+        Item itemTemp = new Item("tv_03", sellingDataTemp);
+        itemTemp.setBids(bidsTemp);
+
+        //Case1
+        //There are bids within valid time
+        itemTemp.setResult();
+        assertEquals(120, itemTemp.getResult().getLowestBid());
+        assertEquals(500, itemTemp.getResult().getHighestBid());
+        checkResultEquals(itemTemp, 9,"SOLD", 420, 12);
+
+        //Case2
+        //There are not (neither within invalid time nor within valid time) bids for this item
+        itemTemp.getBids().clear();
+
+        itemTemp.setResult();
+        assertEquals(0, itemTemp.getResult().getLowestBid());
+        assertEquals(0, itemTemp.getResult().getHighestBid());
+        checkResultEquals(itemTemp, -1,"UNSOLD", 0, 0);
 
     }
 
