@@ -84,7 +84,7 @@ class ItemTest {
     }
 
     @Test
-    void getSecondMaxBidPrice(){
+    void getMaxBidPrice(){
         ArrayList<BidAction> bids2 = new ArrayList<>();
         bids2.add(new BidAction(8,3, 100));
         bids2.add(new BidAction(8,7,150));
@@ -92,11 +92,20 @@ class ItemTest {
         bids2.add(new BidAction(7,3, 200));
 
         item1.setBids(bids2);
-        assertEquals(180, item1.getSecondMaxBidPrice());
+        assertEquals(180, item1.getMaxBidPrice());
 
         bids2.add(new BidAction(10,8, 200));
 
         item1.setBids(bids2);
-        assertEquals(180, item1.getSecondMaxBidPrice());
+        assertEquals(180, item1.getMaxBidPrice());
+
+        ArrayList<BidAction> bids5 = new ArrayList<>();
+        bids5.add(new BidAction(8,3, 100));
+        bids5.add(new BidAction(8,7,100));
+        bids5.add(new BidAction(9, 5,100));
+        bids5.add(new BidAction(7,3, 100));
+
+        item1.setBids(bids5);
+        assertEquals(100, item1.getMaxBidPrice());
     }
 }
