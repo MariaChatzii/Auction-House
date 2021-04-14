@@ -108,4 +108,30 @@ class ItemTest {
         item1.setBids(bids5);
         assertEquals(100, item1.getMaxBidPrice());
     }
+
+    @Test
+    void setResultData(){
+        Result result1 = item1.getResult();
+        item1.setResultData();
+
+        assertEquals(-1, result1.getWinnerId());
+        assertEquals("UNSOLD", result1.getStatus());
+        assertEquals(0.00, result1.getPricePaid());
+        assertEquals(0, result1.getCloseTime());
+    }
+
+    @Test
+    void setWinnerData(){
+
+    }
+
+    @Test
+    void setNoWinnerData(){
+
+    }
+
+    @Test
+    void setResult(){
+
+    }
 }
