@@ -73,10 +73,6 @@ public class Item {
 		}
 	}
 
-	public boolean areThereValidBids(){
-		return !bids.isEmpty();
-	}
-
 	public void setNoWinnerData(){
 		result.setWinnerId(NO_WINNER_ID);
 		result.setStatus(UNSOLD);
@@ -85,7 +81,7 @@ public class Item {
 	}
 
 	public void setResultData(){
-		if(areThereValidBids()) {
+		if(!bids.isEmpty()) { //There are valid bids
 			if (bids.size() == 1) {
 				if(result.getPricePaid() >= sellingData.getPrice()) {
 					result.setPricePaid(sellingData.getPrice());
@@ -102,7 +98,7 @@ public class Item {
 				}
 			}
 		}
-		else {
+		else { //There are not valid bids
 			setNoWinnerData();
 		}
 	}
