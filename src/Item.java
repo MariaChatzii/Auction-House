@@ -94,7 +94,7 @@ public class Item {
 			} else {
 				float maxBidPrice  = bids.get(bids.size()-1).getPrice();
 				if ((maxBidPrice ) >= sellingData.getPrice()){
-					result.setPricePaid(getSecondMaxBidPrice());
+					result.setPricePaid(getMaxBidPrice());
 					int maxBidPricePos = bids.size()-1;
 					setWinnerData(maxBidPricePos);
 				}else{
@@ -107,8 +107,11 @@ public class Item {
 		}
 	}
 
-	public float getSecondMaxBidPrice(){
+	public float getMaxBidPrice(){
 		int freqMaxPrice = totalBidsWithSameHighestPrice();
+		if(freqMaxPrice == bids.size())
+			//all bids have the same price
+			return bids.get(0).getPrice();
 		//N is the number of bids with the same highest price
 		//The bid with the second highest price is located on position: size-N-1
 		return bids.get(bids.size() - freqMaxPrice - 1).getPrice();
