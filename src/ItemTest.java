@@ -152,6 +152,8 @@ class ItemTest {
         assertEquals(8, itemTemp.getResult().getCloseTime());
 
         //Case2
+        //There are more than one bid within valid time
+        //but no one of them has valid price
         itemTemp.getBids().remove(itemTemp.getBids().size()-1);
         itemTemp.getBids().remove(itemTemp.getBids().size()-1);
 
@@ -159,6 +161,8 @@ class ItemTest {
         checkResultEquals(itemTemp, -1, "UNSOLD", 0, 0);
 
         //Case3
+        //There is only a bid within valid time
+        //which does not have valid price
         itemTemp.getBids().remove(itemTemp.getBids().size()-1);
 
         itemTemp.setResultData();
@@ -172,7 +176,8 @@ class ItemTest {
         checkResultEquals(itemTemp, -1, "UNSOLD", 0, 0);
 
         //Case5
-        //Only one bid within valid time which also has valid price
+        //There is only one bid within valid time
+        //which has also valid price
         itemTemp.getBids().add(new BidAction(13,1, 350));
 
         itemTemp.setResultData();
