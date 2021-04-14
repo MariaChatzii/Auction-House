@@ -86,11 +86,13 @@ public class Item {
 				if(result.getPricePaid() >= sellingData.getPrice()) {
 					result.setPricePaid(sellingData.getPrice());
 					setWinnerData(0);
+				}else{
+					setNoWinnerData();
 				}
 			} else {
 				float maxBidPrice  = bids.get(bids.size()-1).getPrice();
 				if ((maxBidPrice ) >= sellingData.getPrice()){
-					result.setPricePaid(getMaxBidPrice());
+					result.setPricePaid(getPaidPrice());
 					int maxBidPricePos = bids.size()-1;
 					setWinnerData(maxBidPricePos);
 				}else{
@@ -103,7 +105,7 @@ public class Item {
 		}
 	}
 
-	public float getMaxBidPrice(){
+	public float getPaidPrice(){
 		int freqMaxPrice = totalBidsWithSameHighestPrice();
 		if(freqMaxPrice == bids.size())
 			//all bids have the same price
