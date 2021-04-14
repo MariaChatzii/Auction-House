@@ -92,12 +92,12 @@ class ItemTest {
         bids2.add(new BidAction(7,3, 200));
 
         item1.setBids(bids2);
-        assertEquals(180, item1.getMaxBidPrice());
+        assertEquals(180, item1.getPaidPrice());
 
         bids2.add(new BidAction(10,8, 200));
 
         item1.setBids(bids2);
-        assertEquals(180, item1.getMaxBidPrice());
+        assertEquals(180, item1.getPaidPrice());
 
         ArrayList<BidAction> bids5 = new ArrayList<>();
         bids5.add(new BidAction(8,3, 100));
@@ -106,11 +106,7 @@ class ItemTest {
         bids5.add(new BidAction(7,3, 100));
 
         item1.setBids(bids5);
-        assertEquals(100, item1.getMaxBidPrice());
-    }
-
-    @Test
-    void setResultData(){
+        assertEquals(100, item1.getPaidPrice());
     }
 
     @Test
@@ -129,17 +125,69 @@ class ItemTest {
 
     @Test
     void setNoWinnerData(){
-        Result result1 = item1.getResult();
         item1.setNoWinnerData();
+        checkResultEquals(item1, -1, "UNSOLD", 0, 0);
+    }
 
-        assertEquals(-1, result1.getWinnerId());
-        assertEquals("UNSOLD", result1.getStatus());
-        assertEquals(0.00, result1.getPricePaid());
-        assertEquals(0, result1.getCloseTime());
+    @Test
+    void setResultData(){
+        ArrayList<BidAction> bidsTemp = new ArrayList<>();
+        bidsTemp.add(new BidAction(16,3, 100));
+        bidsTemp.add(new BidAction(12,9, 180));
+        bidsTemp.add(new BidAction(10,7,300));
+        bidsTemp.add(new BidAction(8, 5,420));
+
+        SellAction sellingDataTemp = new SellAction(7,4,200,19);
+        Item itemTemp = new Item("tv_02", sellingDataTemp);
+        itemTemp.setBids(bidsTemp);
+
+        //Case1
+        //There are more than one bid within valid time
+        //and almost one of them has also valid price
+        itemTemp.setResultData();
+
+        assertEquals(5, itemTemp.getResult().getWinnerId());
+        assertEquals(300, itemTemp.getResult().getPricePaid());
+        assertEquals("SOLD", itemTemp.getResult().getStatus());
+        assertEquals(8, itemTemp.getResult().getCloseTime());
+
+        //Case2
+        itemTemp.getBids().remove(itemTemp.getBids().size()-1);
+        itemTemp.getBids().remove(itemTemp.getBids().size()-1);
+
+        itemTemp.setResultData();
+        checkResultEquals(itemTemp, -1, "UNSOLD", 0, 0);
+
+        //Case3
+        itemTemp.getBids().remove(itemTemp.getBids().size()-1);
+
+        itemTemp.setResultData();
+        checkResultEquals(itemTemp, -1, "UNSOLD", 0, 0);
+
+        //Case4
+        //There are not bids within valid time
+        itemTemp.getBids().remove(itemTemp.getBids().size()-1);
+
+        itemTemp.setResultData();
+        checkResultEquals(itemTemp, -1, "UNSOLD", 0, 0);
+
+        //Case5
+        //Only one bid within valid time which also has valid price
+        itemTemp.getBids().add(new BidAction(13,1, 350));
+
+        itemTemp.setResultData();
+        checkResultEquals(itemTemp, 1, "SOLD", 200, 13);
     }
 
     @Test
     void setResult(){
 
+    }
+
+    void checkResultEquals(Item item, int expectedWinnerId, String expectedStatus, float expectedPrice, int expectedCloseTime){
+        assertEquals(expectedWinnerId, item.getResult().getWinnerId());
+        assertEquals(expectedStatus, item.getResult().getStatus());
+        assertEquals(expectedPrice, item.getResult().getPricePaid());
+        assertEquals(expectedCloseTime, item.getResult().getCloseTime());
     }
 }
