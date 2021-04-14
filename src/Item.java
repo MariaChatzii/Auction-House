@@ -90,7 +90,7 @@ public class Item {
 					setNoWinnerData();
 				}
 			} else {
-				float maxBidPrice  = bids.get(bids.size()-1).getPrice();
+				float maxBidPrice  = bids.get(bids.size()-1).getPrice(); //bids are already sorted by price
 				if ((maxBidPrice ) >= sellingData.getPrice()){
 					result.setPricePaid(getPaidPrice());
 					int maxBidPricePos = bids.size()-1;
