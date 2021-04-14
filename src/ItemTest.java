@@ -201,6 +201,7 @@ class ItemTest {
         //Case1
         //There are bids within valid time
         itemTemp.setResult();
+        assertEquals("tv_03", itemTemp.getResult().getItemCode());
         assertEquals(120, itemTemp.getResult().getLowestBid());
         assertEquals(500, itemTemp.getResult().getHighestBid());
         checkResultEquals(itemTemp, 9,"SOLD", 420, 12);
@@ -210,6 +211,7 @@ class ItemTest {
         itemTemp.getBids().clear();
 
         itemTemp.setResult();
+        assertEquals("tv_03", itemTemp.getResult().getItemCode());
         assertEquals(0, itemTemp.getResult().getLowestBid());
         assertEquals(0, itemTemp.getResult().getHighestBid());
         checkResultEquals(itemTemp, -1,"UNSOLD", 0, 0);
