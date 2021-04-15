@@ -7,7 +7,8 @@ public class OutputFileWriter {
 
     public void writeResult(String inputFilename, ArrayList<Item> itemsForSell){
         try {
-            FileWriter writer = new FileWriter(inputFilename+"Results.txt");
+            String filenameWithoutExtension = inputFilename.substring(0, inputFilename.indexOf('.'));
+            FileWriter writer = new FileWriter(filenameWithoutExtension + "Results.txt");
             for(Item item : itemsForSell) {
                 Result result = item.getResult();
                 writer.write(result.getCloseTime() + "|" + result.getItemCode()+ "|");
