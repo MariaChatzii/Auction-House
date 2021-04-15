@@ -13,5 +13,13 @@ public class BidAction extends Action{
 			result =  Float.compare(bid1.getTimestamp(), bid2.getTimestamp());
 		return result;
 	};
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof BidAction))
+			return false;
+		BidAction otherBid = (BidAction) obj;
+		return((getTimestamp() == otherBid.getTimestamp() && getPrice() == otherBid.getPrice() && getUserId() == otherBid.getUserId()));
+	}
 }
 

@@ -33,6 +33,10 @@ public class Item {
 		return bids;
 	}
 
+	public int getHeartBeatMessage() {
+		return heartBeatMessage;
+	}
+
 	public void setBids(ArrayList<BidAction> bids){
 		this.bids = bids;
 	}
@@ -138,4 +142,5 @@ public class Item {
 	public void add(BidAction bidAction) {
 		bids.add(bidAction);
 	}
+
 }
