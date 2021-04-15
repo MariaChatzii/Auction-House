@@ -3,12 +3,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class OutputFileWriter {
-
     public static final int NO_WINNER_ID = -1;
 
-    public void writeResult(ArrayList<Item> itemsForSell){
+    public void writeResult(String inputFilename, ArrayList<Item> itemsForSell){
         try {
-            FileWriter writer = new FileWriter("auctionResults.txt");
+            FileWriter writer = new FileWriter(inputFilename+"Results.txt");
             for(Item item : itemsForSell) {
                 Result result = item.getResult();
                 writer.write(result.getCloseTime() + "|" + result.getItemCode()+ "|");
