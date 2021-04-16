@@ -1,227 +1,305 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
-    private final Item item1, item2;
+    private Item item1, item2, item3, item4, item5, item6, item7;
 
-    public ItemTest(){
+    @BeforeEach
+    public void setUp(){
+        //Test item1
+        item1 = new Item("bag_2", new SellAction(5, 8, (float) 50.16, 9));
         ArrayList<BidAction> bids1 = new ArrayList<>();
-        bids1.add(new BidAction(8,3, 3));
-        bids1.add(new BidAction(9,7,5));
-        bids1.add(new BidAction(11, 5,10));
-
-        SellAction sellingData1 = new SellAction(2,4,15,19);
-        item1 = new Item("radio_01", sellingData1);
+        bids1.add(new BidAction(7, 6, (float) 45));
         item1.setBids(bids1);
+        item1.setHeartBeatMessage(9);
 
-        SellAction sellingData2 = new SellAction(4,4,100,10);
-        item2 = new Item("tv_01", sellingData2);
-    }
+        //Test item2
+        item2 = new Item("toaster_2", new SellAction(11, 4, (float) 25.30, 17));
+        ArrayList<BidAction> bids2 = new ArrayList<>();
+        bids2.add(new BidAction(12, 3, (float) 35));
+        bids2.add(new BidAction(13, 1, (float) 35));
+        bids2.add(new BidAction(14, 6, (float) 35));
+        bids2.add(new BidAction(16, 8, (float) 20));
+        item2.setBids(bids2);
+        item2.setHeartBeatMessage(15);
 
-    @Test
-    void getHighestBidPrice(){
-        assertEquals(10, item1.getHighestBidPrice());
-    }
+        //Test item3
+        item3 = new Item("toaster_1", new SellAction(10,1, (float) 10.00,20));
+        ArrayList<BidAction> bids3 = new ArrayList<>();
+        bids3.add(new BidAction(12,8,(float) 7.50));
+        bids3.add(new BidAction(13,5, (float) 12.50));
+        bids3.add(new BidAction(17,8, (float) 20));
+        item3.setBids(bids3);
+        item3.setHeartBeatMessage(20);
 
-    @Test
-    void getLowestBidPrice(){
-        assertEquals(3, item1.getLowestBidPrice());
-    }
+        //Test item4
+        item4 = new Item("tv_1", new SellAction(15,8, (float) 250.00,20));
+        ArrayList<BidAction> bids4 = new ArrayList<>();
+        bids4.add(new BidAction(18,1,(float) 150.00));
+        bids4.add(new BidAction(19,3, (float) 200.00));
+        bids4.add(new BidAction(21,3, (float) 300.00));
+        item4.setBids(bids4);
+        item4.setHeartBeatMessage(20);
 
-    @Test
-    void isWithinValidTime(){
-        assertFalse(Item.isWithinValidTime(7, 10, 12));
-        assertFalse(Item.isWithinValidTime(10, 10, 12));
-        assertFalse(Item.isWithinValidTime(15, 10, 12));
-        assertTrue(Item.isWithinValidTime(12, 10, 12));
-        assertTrue(Item.isWithinValidTime(11, 10, 12));
+        //Test item5
+        item5 = new Item("wallet_1", new SellAction(10,1, (float) 10.06,20));
+        ArrayList<BidAction> bids5 = new ArrayList<>();
+        bids5.add(new BidAction(13,4,15));
+        bids5.add(new BidAction(16,3, (float) 9.50));
+        item5.setBids(bids5);
+        item5.setHeartBeatMessage(17);
+
+        //Test item6
+        item6 = new Item("bag_1", new SellAction(14,1, (float) 30.99,23));
+        ArrayList<BidAction> bids6 = new ArrayList<>();
+        bids6.add(new BidAction(18,3,20));
+        bids6.add(new BidAction(19,5, 45));
+        bids6.add(new BidAction(20,2, 45));
+        bids6.add(new BidAction(21,7, 60));
+        item6.setBids(bids6);
+        item6.setHeartBeatMessage(22);
+
+        //Test item7
+        item7 = new Item("laptop_1", new SellAction(14,4, (float) 650,17));
+        ArrayList<BidAction> bids7 = new ArrayList<>();
+        bids7.add(new BidAction(16,7,(float) 730));
+        bids7.add(new BidAction(17,8, (float) 730));
+        item7.setBids(bids7);
+        item7.setHeartBeatMessage(15);
     }
 
     @Test
     void removeInvalidTimeBids(){
-        ArrayList<BidAction> bids4 = new ArrayList<>();
-        BidAction bid1 = new BidAction(19,6, 70);
-        BidAction bid2 = new BidAction(1,6,90);
-        BidAction bid3 = new BidAction(20, 5,100);
-        BidAction bid4 = new BidAction(15, 5,100);
+        item4.removeInvalidTimeBids();
 
-        bids4.add(bid1);
-        bids4.add(bid2);
-        bids4.add(bid3);
-        bids4.add(bid4);
+        ArrayList<BidAction> bidsExpected = new ArrayList<>();
+        bidsExpected.add(item4.getBids().get(0));
+        bidsExpected.add(item4.getBids().get(1));
 
-        item1.setBids(bids4);
+        assertEquals(bidsExpected, item4.getBids());
+    }
 
-        ArrayList<BidAction> bidsTrue = new ArrayList<>();
-        bidsTrue.add(bid1);
-        bidsTrue.add(bid4);
+    @Test
+    void testRemoveInvalidPriceBids(){
+        item3.removeInvalidTimeBids();
+        item4.removeInvalidTimeBids();
 
-        item1.removeInvalidTimeBids();
-        assertEquals(bidsTrue, item1.getBids());
+        //Expected results
+        ArrayList<BidAction> bidsExpected = new ArrayList<>();
+        bidsExpected.add(item3.getBids().get(1));
+        bidsExpected.add(item3.getBids().get(2));
+
+        item3.removeInvalidPriceBids();
+        item4.removeInvalidPriceBids();
+
+        assertEquals(bidsExpected, item3.getBids());
+        assertEquals(0, item4.getBids().size());
+    }
+
+    @Test
+    void getHighestBidPrice(){
+        //This method works correctly only with sorted by price bids
+        ascendingSortingByPrice();
+
+        assertEquals(45, item1.getHighestBidPrice());
+        assertEquals(35, item2.getHighestBidPrice());
+        assertEquals(20, item3.getHighestBidPrice());
+        assertEquals(300, item4.getHighestBidPrice());
+        assertEquals(15, item5.getHighestBidPrice());
+        assertEquals(60, item6.getHighestBidPrice());
+        assertEquals(730, item7.getLowestBidPrice());
+    }
+
+    @Test
+    void getLowestBidPrice(){
+        //This method works correctly only with sorted by price bids
+        ascendingSortingByPrice();
+
+        assertEquals(45, item1.getLowestBidPrice());
+        assertEquals(20, item2.getLowestBidPrice());
+        assertEquals(7.50, item3.getLowestBidPrice());
+        assertEquals(150, item4.getLowestBidPrice());
+        assertEquals(9.50, item5.getLowestBidPrice());
+        assertEquals(20, item6.getLowestBidPrice());
+        assertEquals(730, item7.getLowestBidPrice());
+    }
+
+    @Test
+    void isWithinValidTime(){
+        //Testing for bids of item4
+        assertTrue(Item.isWithinValidTime(item4.getBids().get(0).getTimestamp(), item4.getSellingData().getTimestamp(), item4.getSellingData().getCloseTime()));
+        assertTrue(Item.isWithinValidTime(item4.getBids().get(1).getTimestamp(), item4.getSellingData().getTimestamp(), item4.getSellingData().getCloseTime()));
+        assertFalse(Item.isWithinValidTime(item4.getBids().get(2).getTimestamp(), item4.getSellingData().getTimestamp(), item4.getSellingData().getCloseTime()));
     }
 
     @Test
     void totalBidsWithSameHighestPrice(){
-        ArrayList<BidAction> bids2 = new ArrayList<>();
-        bids2.add(new BidAction(8,3, 124));
-        bids2.add(new BidAction(8,7,130));
-        bids2.add(new BidAction(9, 5,200));
-        bids2.add(new BidAction(10,3, 200));
+        item6.getBids().sort(BidAction.sortByPrice);
+        item2.getBids().sort(BidAction.sortByPrice);
 
-        item2.setBids(bids2);
-        assertEquals(2,item2.totalBidsWithSameHighestPrice());
+        item6.removeInvalidTimeBids();
+        item2.removeInvalidTimeBids();
 
-        ArrayList<BidAction> bids3 = new ArrayList<>();
-        bids3.add(new BidAction(1,3, 30));
-        bids3.add(new BidAction(2,7,50));
-        bids3.add(new BidAction(5, 5,100));
-        bids3.add(new BidAction(10,3, 600));
+        item6.removeInvalidPriceBids();
+        item2.removeInvalidPriceBids();
 
-        item2.setBids(bids3);
-        assertEquals(1,item2.totalBidsWithSameHighestPrice());
+        assertEquals(1, item6.totalBidsWithSameHighestPrice());
+        assertEquals(3, item2.totalBidsWithSameHighestPrice());
     }
 
     @Test
-    void getMaxBidPrice(){
-        ArrayList<BidAction> bids2 = new ArrayList<>();
-        bids2.add(new BidAction(8,3, 100));
-        bids2.add(new BidAction(8,7,150));
-        bids2.add(new BidAction(9, 5,180));
-        bids2.add(new BidAction(7,3, 200));
+    void testGetPaidPrice(){
+        //This method works correctly only with sorted by price bids
+        ascendingSortingByPrice();
 
-        item1.setBids(bids2);
-        assertEquals(180, item1.getPaidPrice());
+        item3.removeInvalidTimeBids();
+        item6.removeInvalidTimeBids();
+        item2.removeInvalidTimeBids();
+        item7.removeInvalidTimeBids();
 
-        bids2.add(new BidAction(10,8, 200));
+        item3.removeInvalidPriceBids();
+        item6.removeInvalidPriceBids();
+        item2.removeInvalidPriceBids();
+        item7.removeInvalidPriceBids();
 
-        item1.setBids(bids2);
-        assertEquals(180, item1.getPaidPrice());
-
-        ArrayList<BidAction> bids5 = new ArrayList<>();
-        bids5.add(new BidAction(8,3, 100));
-        bids5.add(new BidAction(8,7,100));
-        bids5.add(new BidAction(9, 5,100));
-        bids5.add(new BidAction(7,3, 100));
-
-        item1.setBids(bids5);
-        assertEquals(100, item1.getPaidPrice());
+        //only for sold items with more than 1 valid bids
+        assertEquals(12.50, item3.getPaidPrice());
+        assertEquals(45, item6.getPaidPrice());
+        assertEquals(35, item2.getPaidPrice());
+        assertEquals(730, item7.getPaidPrice());
     }
 
     @Test
     void setWinnerData(){
-        Result result1 = item1.getResult();
+        //winner is between valid bids only
+        item6.getBids().sort(BidAction.sortByPrice);
+        item6.removeInvalidTimeBids();
+        item6.removeInvalidPriceBids();
 
-        item1.setWinnerData();
-        assertEquals(5, result1.getWinnerId());
+        Result result1 = item6.getResult();
+        item6.setHeartBeatMessage(22);
+        item6.setWinnerData();
+
+        assertEquals(7, result1.getWinnerId());
         assertEquals("SOLD", result1.getStatus());
-        assertEquals(11, result1.getCloseTime());
+        assertEquals(22, result1.getCloseTime());
 
-        item1.setHeartBeatMessage(18);
-        item1.setWinnerData();
-        assertEquals(18, result1.getCloseTime());
+        //winner is between valid bids only
+        item5.getBids().sort(BidAction.sortByPrice);
+        item5.removeInvalidTimeBids();
+        item5.removeInvalidPriceBids();
+
+        Result result2 = item5.getResult();
+        item5.setHeartBeatMessage(17);
+        item5.setWinnerData();
+
+        assertEquals(4, result2.getWinnerId());
+        assertEquals("SOLD", result2.getStatus());
+        assertEquals(17, result2.getCloseTime());
     }
 
     @Test
     void setNoWinnerData(){
         item1.setNoWinnerData();
-        checkResultEquals(item1, -1, "UNSOLD", 0, 0);
+        checkResultDataEquals(item1, -1, "UNSOLD", 0, 9);
     }
 
     @Test
     void setResultData(){
-        ArrayList<BidAction> bidsTemp = new ArrayList<>();
-        bidsTemp.add(new BidAction(16,3, 100));
-        bidsTemp.add(new BidAction(12,9, 180));
-        bidsTemp.add(new BidAction(10,7,300));
-        bidsTemp.add(new BidAction(8, 5,420));
-
-        SellAction sellingDataTemp = new SellAction(7,4,200,19);
-        Item itemTemp = new Item("tv_02", sellingDataTemp);
-        itemTemp.setBids(bidsTemp);
-
         //Case1
-        //There are more than one bid within valid time
-        //and almost one of them has also valid price
-        itemTemp.setResultData();
+        //There is only one bid with valid time and valid price
+        item5.removeInvalidTimeBids();
+        item5.removeInvalidPriceBids();
 
-        assertEquals(5, itemTemp.getResult().getWinnerId());
-        assertEquals(300, itemTemp.getResult().getPricePaid());
-        assertEquals("SOLD", itemTemp.getResult().getStatus());
-        assertEquals(8, itemTemp.getResult().getCloseTime());
+        item5.setResultData();
+        checkResultDataEquals(item5, 4, "SOLD", (float) 10.06, 17);
 
         //Case2
-        //There are more than one bid within valid time
-        //but no one of them has valid price
-        itemTemp.getBids().remove(itemTemp.getBids().size()-1);
-        itemTemp.getBids().remove(itemTemp.getBids().size()-1);
+        //There are more than one bid with valid time and valid price
+        //Test1
+        item6.removeInvalidTimeBids();
+        item6.removeInvalidPriceBids();
 
-        itemTemp.setResultData();
-        checkResultEquals(itemTemp, -1, "UNSOLD", 0, 0);
+        item6.setResultData();
+        checkResultDataEquals(item6, 7, "SOLD", 45, 22);
+
+        //Test2
+        item7.removeInvalidTimeBids();
+        item7.removeInvalidPriceBids();
+
+        item7.setResultData();
+        checkResultDataEquals(item7, 8, "SOLD", 730, 17);
 
         //Case3
-        //There is only a bid within valid time
-        //which does not have valid price
-        itemTemp.getBids().remove(itemTemp.getBids().size()-1);
-
-        itemTemp.setResultData();
-        checkResultEquals(itemTemp, -1, "UNSOLD", 0, 0);
-
-        //Case4
         //There are not bids within valid time
-        itemTemp.getBids().remove(itemTemp.getBids().size()-1);
+        Item itemTemp = new Item("tempCode_1", new SellAction(2, 6, (float) 10.50, 3));
+
+        itemTemp.setBids(new ArrayList<>());
+        itemTemp.setHeartBeatMessage(3);
+        itemTemp.removeInvalidTimeBids();
 
         itemTemp.setResultData();
-        checkResultEquals(itemTemp, -1, "UNSOLD", 0, 0);
-
-        //Case5
-        //There is only one bid within valid time
-        //which has also valid price
-        itemTemp.getBids().add(new BidAction(13,1, 350));
-
-        itemTemp.setResultData();
-        checkResultEquals(itemTemp, 1, "SOLD", 200, 13);
+        checkResultDataEquals(itemTemp, -1, "UNSOLD", 0, 3);
     }
 
     @Test
     void setResult(){
-        ArrayList<BidAction> bidsTemp = new ArrayList<>();
-
-        bidsTemp.add(new BidAction(7, 4, 500));
-        bidsTemp.add(new BidAction(8, 5,420));
-        bidsTemp.add(new BidAction(10,7,120));
-        bidsTemp.add(new BidAction(12,9, 500));
-        bidsTemp.add(new BidAction(16,3, 100));
-
-        SellAction sellingDataTemp = new SellAction(6,2,150,15);
-        Item itemTemp = new Item("tv_03", sellingDataTemp);
-        itemTemp.setBids(bidsTemp);
-
         //Case1
-        //There are bids within valid time
-        itemTemp.setResult();
-        assertEquals("tv_03", itemTemp.getResult().getItemCode());
-        assertEquals(120, itemTemp.getResult().getLowestBid());
-        assertEquals(500, itemTemp.getResult().getHighestBid());
-        checkResultEquals(itemTemp, 9,"SOLD", 420, 12);
+        //Test1
+        item7.setResult();
+        assertEquals("laptop_1", item7.getResult().getItemCode());
+        assertEquals(730, item7.getResult().getLowestBid());
+        assertEquals(730, item7.getResult().getHighestBid());
+        checkResultDataEquals(item7, 8,"SOLD", 730, 17);
+
+        //Test2
+        item2.setResult();
+        assertEquals("toaster_2", item2.getResult().getItemCode());
+        assertEquals(20, item2.getResult().getLowestBid());
+        assertEquals(35, item2.getResult().getHighestBid());
+        checkResultDataEquals(item2, 6,"SOLD", 35, 15);
+
+        //Test3
+        item5.setResult();
+        assertEquals("wallet_1", item5.getResult().getItemCode());
+        assertEquals(9.50, item5.getResult().getLowestBid());
+        assertEquals(15, item5.getResult().getHighestBid());
+        checkResultDataEquals(item5, 4,"SOLD", (float) 10.06, 17);
 
         //Case2
-        //There are not (neither within invalid time nor within valid time) bids for this item
-        itemTemp.getBids().clear();
+        //There are not (neither valid nor invalid) bids for this item
+        SellAction sellingDataTemp = new SellAction(6,2,150,15);
+        Item itemTemp = new Item("tv_03", sellingDataTemp);
+        itemTemp.setBids(new ArrayList<>());
 
+        itemTemp.setHeartBeatMessage(18);
         itemTemp.setResult();
+
         assertEquals("tv_03", itemTemp.getResult().getItemCode());
         assertEquals(0, itemTemp.getResult().getLowestBid());
         assertEquals(0, itemTemp.getResult().getHighestBid());
-        checkResultEquals(itemTemp, -1,"UNSOLD", 0, 0);
+        checkResultDataEquals(itemTemp, -1,"UNSOLD", 0, 18);
 
     }
 
-    void checkResultEquals(Item item, int expectedWinnerId, String expectedStatus, float expectedPrice, int expectedCloseTime){
+    void checkResultDataEquals(Item item, int expectedWinnerId, String expectedStatus, float expectedPrice, int expectedCloseTime){
         assertEquals(expectedWinnerId, item.getResult().getWinnerId());
         assertEquals(expectedStatus, item.getResult().getStatus());
         assertEquals(expectedPrice, item.getResult().getPricePaid());
         assertEquals(expectedCloseTime, item.getResult().getCloseTime());
     }
+
+    void ascendingSortingByPrice(){
+        item1.getBids().sort(BidAction.sortByPrice);
+        item2.getBids().sort(BidAction.sortByPrice);
+        item3.getBids().sort(BidAction.sortByPrice);
+        item4.getBids().sort(BidAction.sortByPrice);
+        item5.getBids().sort(BidAction.sortByPrice);
+        item6.getBids().sort(BidAction.sortByPrice);
+        item7.getBids().sort(BidAction.sortByPrice);
+    }
+
 }

@@ -129,8 +129,8 @@ public class Item {
 		result.setCloseTime(getResultCloseTime(winnerBid.getTimestamp()));
 	}
 
-	public int getResultCloseTime(int winnerBidTimestamp){
-		return Math.max(heartBeatMessage, winnerBidTimestamp);
+	public int getResultCloseTime(int timestamp){
+		return Math.max(heartBeatMessage, timestamp);
 	}
 
 	public static boolean isWithinValidTime(int timestampToCheck, int auctionStartedTime, int auctionClosedTime){
