@@ -89,13 +89,6 @@ public class Item {
 		}
 	}
 
-	public void setNoWinnerData(){
-		result.setWinnerId(NO_WINNER_ID);
-		result.setStatus(UNSOLD);
-		result.setPricePaid(0);
-		result.setCloseTime(getResultCloseTime(0));
-	}
-
 	public void setResultData(){
 		if(!bids.isEmpty()) { //There are valid bids as to time and price
 			if(bids.size() == 1)
@@ -109,16 +102,6 @@ public class Item {
 		}
 	}
 
-	public float getPaidPrice(){
-		int freqMaxPrice = totalBidsWithSameHighestPrice();
-		if(freqMaxPrice == bids.size())
-			//all bids have the same price
-			return bids.get(0).getPrice();
-		//N is the number of bids with the same highest price
-		//The bid with the second highest price is located on position: size-N-1
-		return bids.get(bids.size() - freqMaxPrice - 1).getPrice();
-	}
-
 	public void setWinnerData(){
 		// Bids are already sorted by price and time
 		// Thus, bid with the highest price and most recent time is located at the end of "bids" list.
@@ -127,6 +110,23 @@ public class Item {
 		result.setWinnerId(winnerBid.getUserId());
 		result.setStatus(SOLD);
 		result.setCloseTime(getResultCloseTime(winnerBid.getTimestamp()));
+	}
+
+	public void setNoWinnerData(){
+		result.setWinnerId(NO_WINNER_ID);
+		result.setStatus(UNSOLD);
+		result.setPricePaid(0);
+		result.setCloseTime(getResultCloseTime(0));
+	}
+
+	public float getPaidPrice(){
+		int freqMaxPrice = totalBidsWithSameHighestPrice();
+		if(freqMaxPrice == bids.size())
+			//all bids have the same price
+			return bids.get(0).getPrice();
+		//N is the number of bids with the same highest price
+		//The bid with the second highest price is located on position: size-N-1
+		return bids.get(bids.size() - freqMaxPrice - 1).getPrice();
 	}
 
 	public int getResultCloseTime(int timestamp){
@@ -140,9 +140,4 @@ public class Item {
 	public int totalBidsWithSameHighestPrice() {
 		return (int) bids.stream().filter(bid -> (bid.getPrice() == bids.get(bids.size()-1).getPrice())).count();
 	}
-
-	public void add(BidAction bidAction) {
-		bids.add(bidAction);
-	}
-
 }

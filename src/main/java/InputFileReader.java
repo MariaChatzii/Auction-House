@@ -50,7 +50,7 @@ public class InputFileReader {
 					String itemCode = lineData[3];
 					float reservePrice = Float.parseFloat(lineData[4]);
 
-					getItemByCode(itemsForSelling, itemCode).add(new BidAction(timestamp, userId, reservePrice));
+					getItemByCode(itemsForSelling, itemCode).getBids().add(new BidAction(timestamp, userId, reservePrice));
 				}
 				else{ //HeartBeat Messages
 					heartBeatMessages.add(Integer.parseInt(lineData[0]));
