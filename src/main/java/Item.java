@@ -84,7 +84,7 @@ public class Item {
 	public void removeInvalidPriceBids(){
 		ArrayList<BidAction> bidsTemp = new ArrayList<>(bids);
 		for (BidAction bid : bidsTemp) {
-			if (bid.getPrice() >= sellingData.getPrice())
+			if (bid.getPrice() < sellingData.getPrice())
 				bids.remove(bid);
 		}
 	}
