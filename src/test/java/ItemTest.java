@@ -113,13 +113,13 @@ class ItemTest {
     void setWinnerData(){
         Result result1 = item1.getResult();
 
-        item1.setWinnerData(2);
+        item1.setWinnerData();
         assertEquals(5, result1.getWinnerId());
         assertEquals("SOLD", result1.getStatus());
         assertEquals(11, result1.getCloseTime());
 
         item1.setHeartBeatMessage(18);
-        item1.setWinnerData(2);
+        item1.setWinnerData();
         assertEquals(18, result1.getCloseTime());
     }
 

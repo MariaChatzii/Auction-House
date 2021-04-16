@@ -50,9 +50,13 @@ public class Item {
 		if(bids.size()!=0) {
 			bids.sort(BidAction.sortByPrice);
 			removeInvalidTimeBids();
+
 			result.setLowestBid(getLowestBidPrice());
 			result.setHighestBid(getHighestBidPrice());
 			result.setTotalBidCount(bids.size());
+
+			//the winner bid price and the price paid must be valid, namely higher than the reserve_price)
+			removeInvalidPriceBids();
 			setResultData();
 		}else {
 			result.setHighestBid(0);
@@ -77,6 +81,14 @@ public class Item {
 		}
 	}
 
+	public void removeInvalidPriceBids(){
+		ArrayList<BidAction> bidsTemp = new ArrayList<>(bids);
+		for (BidAction bid : bidsTemp) {
+			if (bid.getPrice() >= sellingData.getPrice())
+				bids.remove(bid);
+		}
+	}
+
 	public void setNoWinnerData(){
 		result.setWinnerId(NO_WINNER_ID);
 		result.setStatus(UNSOLD);
@@ -85,26 +97,16 @@ public class Item {
 	}
 
 	public void setResultData(){
-		if(!bids.isEmpty()) { //There are valid bids
+		if(!bids.isEmpty()) { //There are valid bids as to time and price
 			if (bids.size() == 1) {
-				if(bids.get(0).getPrice() >= sellingData.getPrice()) {
-					result.setPricePaid(sellingData.getPrice());
-					setWinnerData(0);
-				}else{
-					setNoWinnerData();
-				}
+				result.setPricePaid(sellingData.getPrice());
+				setWinnerData();
 			} else {
-				float maxBidPrice  = bids.get(bids.size()-1).getPrice(); //bids are already sorted by price
-				if ((maxBidPrice ) >= sellingData.getPrice()){
-					result.setPricePaid(getPaidPrice());
-					int maxBidPricePos = bids.size()-1;
-					setWinnerData(maxBidPricePos);
-				}else{
-					setNoWinnerData();
-				}
+				result.setPricePaid(getPaidPrice());
+				setWinnerData();
 			}
 		}
-		else { //There are not valid bids
+		else { //There are not valid bids as to time and price
 			setNoWinnerData();
 		}
 	}
@@ -119,8 +121,10 @@ public class Item {
 		return bids.get(bids.size() - freqMaxPrice - 1).getPrice();
 	}
 
-	public void setWinnerData(int winnerPosition){
-		BidAction winnerBid = bids.get(winnerPosition);
+	public void setWinnerData(){
+		// Bids are already sorted by price and time
+		// Thus, bid with the highest price and most recent time is located at the end of "bids" list.
+		BidAction winnerBid = bids.get(bids.size()-1);
 
 		result.setWinnerId(winnerBid.getUserId());
 		result.setStatus(SOLD);
