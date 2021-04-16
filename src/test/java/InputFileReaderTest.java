@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InputFileReaderTest {
-    ArrayList<Item> items1 = new ArrayList<>();
-    ArrayList<Integer> heartBeatMessages1 = new ArrayList<>();
+    ArrayList<Item> itemsTest = new ArrayList<>();
+    ArrayList<Integer> heartBeatMessagesTest = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
-        String filename = "input1.txt";
-        InputStream in = new ByteArrayInputStream(filename.getBytes());
+        String testFilename = "input1.txt";
+        InputStream in = new ByteArrayInputStream(testFilename.getBytes());
         System.setIn(in);
 
         initializing();
@@ -37,19 +37,19 @@ class InputFileReaderTest {
         item2.setBids(bids2);
         item2.setHeartBeatMessage(22);
 
-        items1.add(item1);
-        items1.add(item2);
-        heartBeatMessages1.add(12);
-        heartBeatMessages1.add(15);
-        heartBeatMessages1.add(17);
-        heartBeatMessages1.add(22);
+        itemsTest.add(item1);
+        itemsTest.add(item2);
+        heartBeatMessagesTest.add(12);
+        heartBeatMessagesTest.add(15);
+        heartBeatMessagesTest.add(17);
+        heartBeatMessagesTest.add(22);
     }
 
     @Test
     void testReadActions(){
         InputFileReader inputFileReader = new InputFileReader();
-        for(int i=0; i<items1.size(); i++) {
-            checkResultEquals(inputFileReader.readActions(), items1.get(i), i);
+        for(int i = 0; i< itemsTest.size(); i++) {
+            checkResultEquals(inputFileReader.readActions(), itemsTest.get(i), i);
         }
     }
 
@@ -72,9 +72,9 @@ class InputFileReaderTest {
     @Test
     void testGetItemByCode(){
         InputFileReader inputFileReader = new InputFileReader();
-        inputFileReader.setItemHeartBeatMessage(items1, heartBeatMessages1);
-        assertEquals(items1.get(1), inputFileReader.getItemByCode(items1, "bag_1"));
-        assertNull(inputFileReader.getItemByCode(items1, "bag_2"));
+        inputFileReader.setItemHeartBeatMessage(itemsTest, heartBeatMessagesTest);
+        assertEquals(itemsTest.get(1), inputFileReader.getItemByCode(itemsTest, "bag_1"));
+        assertNull(inputFileReader.getItemByCode(itemsTest, "bag_2"));
     }
 
 }

@@ -1,26 +1,32 @@
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OutputFileWriterTest {
-    ArrayList<Item> items1 = new ArrayList<>();
-    ArrayList<Integer> heartBeatMessages1 = new ArrayList<>();
+    ArrayList<Item> testItems = new ArrayList<>();
+    ArrayList<Integer> heartBeatMessagesTest = new ArrayList<>();
 
     @Test
     void testWriteResult() throws IOException {
-        initializing();
-
         OutputFileWriter outputWriter = new OutputFileWriter();
-        outputWriter.writeResult("testFile1.txt", items1);
+        outputWriter.writeResult("testFile1.txt", testItems);
 
         File testFile1 = new File("testFile1Results.txt");
         assertTrue(hasSameContent(testFile1, new File("testFile1Expected.txt")));
+        assertFalse(hasSameContent(testFile1, new File("testFile1ExpectedFalse.txt")));
     }
 
-    public void initializing(){
+    @BeforeEach
+    public void setUp(){
+        //Initializing two items for writing their result to output file
+
         Item item1 = new Item("wallet_1", new SellAction(10,1, (float) 10.06,20));
         ArrayList<BidAction> bids1 = new ArrayList<>();
         bids1.add(new BidAction(13,4,15));
@@ -39,12 +45,12 @@ class OutputFileWriterTest {
         item2.setHeartBeatMessage(22);
         item2.setResult();
 
-        items1.add(item1);
-        items1.add(item2);
-        heartBeatMessages1.add(12);
-        heartBeatMessages1.add(15);
-        heartBeatMessages1.add(17);
-        heartBeatMessages1.add(22);
+        testItems.add(item1);
+        testItems.add(item2);
+        heartBeatMessagesTest.add(12);
+        heartBeatMessagesTest.add(15);
+        heartBeatMessagesTest.add(17);
+        heartBeatMessagesTest.add(22);
     }
 
     public boolean hasSameContent(File testFile, File expectedFile) throws IOException {
@@ -57,10 +63,14 @@ class OutputFileWriterTest {
         while(true){
             lineFile1 = reader1.readLine();
             lineFile2 = reader2.readLine();
-            if(lineFile1 != null && lineFile2 != null)
+
+            if(lineFile1 == null && lineFile2 == null) {
                 return true;
-            if(lineFile1.equals(lineFile2))
+            } else if(lineFile1 == null || lineFile2 == null){
                 return false;
+            } else if(!lineFile2.equals(lineFile1)) {
+                return false;
+            }
         }
     }
 }
