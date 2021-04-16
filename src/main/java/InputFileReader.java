@@ -75,10 +75,13 @@ public class InputFileReader {
 	public void setItemHeartBeatMessage(ArrayList<Item> items, ArrayList<Integer> heartBeatMessages){
 		//For each item appears throughout the auction, only the highest value of heartbreak message
 		//(within the item valid time) is stored.
-		for(Item item : items)
-			for(Integer message : heartBeatMessages)
+		int maxHeartBeatMessage = 0;
+		for(Item item : items) {
+			for (Integer message : heartBeatMessages)
 				if (Item.isWithinValidTime(message, item.getSellingData().getTimestamp(), item.getSellingData().getCloseTime()))
-					item.setHeartBeatMessage(message);
+					maxHeartBeatMessage = Math.max(message, maxHeartBeatMessage);
+			item.setHeartBeatMessage(maxHeartBeatMessage);
+		}
 	}
 
 	public String getInputFileFromUser() {
