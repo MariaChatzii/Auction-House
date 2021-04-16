@@ -98,13 +98,8 @@ public class Item {
 
 	public void setResultData(){
 		if(!bids.isEmpty()) { //There are valid bids as to time and price
-			if (bids.size() == 1) {
-				result.setPricePaid(sellingData.getPrice());
-				setWinnerData();
-			} else {
-				result.setPricePaid(getPaidPrice());
-				setWinnerData();
-			}
+			result.setPricePaid(sellingData.getPrice());
+			setWinnerData();
 		}
 		else { //There are not valid bids as to time and price
 			setNoWinnerData();
