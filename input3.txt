@@ -1,0 +1,4 @@
+14|4|SELL|laptop_1|650|17
+15|
+16|7|BID|laptop_1|730
+17|8|BID|laptop_1|730

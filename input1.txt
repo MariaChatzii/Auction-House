@@ -1,0 +1,12 @@
+10|1|SELL|wallet_1|10.06|20
+12
+13|4|BID|wallet_1|15
+14|1|SELL|bag_1|30.99|23
+15
+16|3|BID|wallet_1|9.50
+17
+18|3|BID|bag_1|20
+19|5|BID|bag_1|45
+20|2|BID|bag_1|45
+21|7|BID|bag_1|60
+22

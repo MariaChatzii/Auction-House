@@ -1,0 +1,12 @@
+5|8|SELL|bag_2|50.16|9
+6
+7|6|BID|bag_2|45
+8
+9
+10
+11|4|SELL|toaster_2|25.30|17
+12|3|BID|toaster_2|35
+13|1|BID|toaster_2|35
+14|6|BID|toaster_2|35
+15
+16|8|BID|toaster_2|20
