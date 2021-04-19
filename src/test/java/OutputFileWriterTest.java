@@ -12,11 +12,10 @@ class OutputFileWriterTest {
     @Test
     void testWriteResult() throws IOException {
         OutputFileWriter outputWriter = new OutputFileWriter();
-        outputWriter.writeResult("testFile1.txt", testItems);
+        outputWriter.writeResult("inputTest.txt", testItems);
 
-        File testFile1 = new File("testFile1Results.txt");
-        assertTrue(hasSameContent(testFile1, new File("testFile1Expected.txt")));
-        assertFalse(hasSameContent(testFile1, new File("testFile1ExpectedFalse.txt")));
+        File testFile1 = new File("inputTestResults.txt");
+        assertTrue(hasSameContent(testFile1, new File("inputTestResultsExpected.txt")));
     }
 
     @BeforeEach
