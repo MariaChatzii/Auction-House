@@ -22,7 +22,7 @@ public class InputFileReader {
 	public ArrayList<Item> readActions(){
 		try {
 			ArrayList<Item> itemsForSelling = new ArrayList<>();
-			ArrayList<Integer> heartBeatMessages = new ArrayList<>();
+			ArrayList<Integer> timestamps = new ArrayList<>(); //stores all timestamps containing in input file
 
 			BufferedReader fileReader = new BufferedReader(new FileReader(filename));
 
@@ -41,6 +41,8 @@ public class InputFileReader {
 				    int closeTime = Integer.parseInt(lineData[5]);
 
 				    itemsForSelling.add(new Item(itemCode, new SellAction(timestamp, userId, reservePrice, closeTime)));
+
+				    timestamps.add(timestamp);
 				}
 				//Input lines with "BID" status have 5 different characteristics
 				//"SellAction" class store only the "N_BID_FIELDS" of them
@@ -50,13 +52,16 @@ public class InputFileReader {
 					String itemCode = lineData[3];
 					float reservePrice = Float.parseFloat(lineData[4]);
 
+					//adding the new bid to item bids list
 					getItemByCode(itemsForSelling, itemCode).getBids().add(new BidAction(timestamp, userId, reservePrice));
+
+					timestamps.add(timestamp);
 				}
 				else{ //HeartBeat Messages
-					heartBeatMessages.add(Integer.parseInt(lineData[0]));
+					timestamps.add(Integer.parseInt(lineData[0]));
 				}
 			}
-			setItemHeartBeatMessage(itemsForSelling, heartBeatMessages);
+			setItemMaxTimestamp(itemsForSelling, timestamps);
 			fileReader.close();
 		    return itemsForSelling;
 		} catch (IOException e) {
@@ -72,15 +77,15 @@ public class InputFileReader {
 		return null;
 	}
 
-	public void setItemHeartBeatMessage(ArrayList<Item> items, ArrayList<Integer> heartBeatMessages){
-		//For each item appears throughout the auction, only the highest value of heartbreak message
+	public void setItemMaxTimestamp(ArrayList<Item> items, ArrayList<Integer> timestamps){
+		//For each item appears throughout the auction, only the highest value of timestamps
 		//(within the item valid time) is stored.
-		int maxHeartBeatMessage = 0;
+		int maxTimestamp = 0;
 		for(Item item : items) {
-			for (Integer message : heartBeatMessages)
-				if (Item.isWithinValidTime(message, item.getSellingData().getTimestamp(), item.getSellingData().getCloseTime()))
-					maxHeartBeatMessage = Math.max(message, maxHeartBeatMessage);
-			item.setHeartBeatMessage(maxHeartBeatMessage);
+			for (Integer timestamp : timestamps)
+				if (Item.isWithinValidTime(timestamp, item.getSellingData().getTimestamp(), item.getSellingData().getCloseTime()))
+					 maxTimestamp = Math.max(timestamp, maxTimestamp);
+			item.getResult().setCloseTime(maxTimestamp); //setting the close time of the result for the each item
 		}
 	}
 

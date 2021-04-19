@@ -9,7 +9,6 @@ public class Item {
 	private final SellAction sellingData;
 	private ArrayList<BidAction> bids = new ArrayList<>();
 	private final Result result;
-	private int heartBeatMessage;
 
 	public Item(String code, SellAction sellingData) {
 		this.code = code;
@@ -33,16 +32,8 @@ public class Item {
 		return bids;
 	}
 
-	public int getHeartBeatMessage() {
-		return heartBeatMessage;
-	}
-
 	public void setBids(ArrayList<BidAction> bids){
 		this.bids = bids;
-	}
-
-	public void setHeartBeatMessage(int heartBeatMessage) {
-		this.heartBeatMessage = heartBeatMessage;
 	}
 
 	public void setResult(){
@@ -109,14 +100,12 @@ public class Item {
 
 		result.setWinnerId(winnerBid.getUserId());
 		result.setStatus(SOLD);
-		result.setCloseTime(getResultCloseTime(winnerBid.getTimestamp()));
 	}
 
 	public void setNoWinnerData(){
 		result.setWinnerId(NO_WINNER_ID);
 		result.setStatus(UNSOLD);
 		result.setPricePaid(0);
-		result.setCloseTime(getResultCloseTime(0));
 	}
 
 	public float getPaidPrice(){
@@ -127,10 +116,6 @@ public class Item {
 		//N is the number of bids with the same highest price
 		//The bid with the second highest price is located on position: size-N-1
 		return bids.get(bids.size() - freqMaxPrice - 1).getPrice();
-	}
-
-	public int getResultCloseTime(int timestamp){
-		return Math.max(heartBeatMessage, timestamp);
 	}
 
 	public static boolean isWithinValidTime(int timestampToCheck, int auctionStartedTime, int auctionClosedTime){

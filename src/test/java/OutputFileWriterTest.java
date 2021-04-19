@@ -1,17 +1,13 @@
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OutputFileWriterTest {
     ArrayList<Item> testItems = new ArrayList<>();
-    ArrayList<Integer> heartBeatMessagesTest = new ArrayList<>();
 
     @Test
     void testWriteResult() throws IOException {
@@ -32,7 +28,7 @@ class OutputFileWriterTest {
         bids1.add(new BidAction(13,4,15));
         bids1.add(new BidAction(16,3, 9.50F));
         item1.setBids(bids1);
-        item1.setHeartBeatMessage(17);
+        item1.getResult().setCloseTime(20);
         item1.setResult();
 
         Item item2 = new Item("bag_1", new SellAction(14,1, (float) 30.99,23));
@@ -42,15 +38,11 @@ class OutputFileWriterTest {
         bids2.add(new BidAction(20,2, 45));
         bids2.add(new BidAction(21,7, 60));
         item2.setBids(bids2);
-        item2.setHeartBeatMessage(22);
+        item1.getResult().setCloseTime(22);
         item2.setResult();
 
         testItems.add(item1);
         testItems.add(item2);
-        heartBeatMessagesTest.add(12);
-        heartBeatMessagesTest.add(15);
-        heartBeatMessagesTest.add(17);
-        heartBeatMessagesTest.add(22);
     }
 
     public boolean hasSameContent(File testFile, File expectedFile) throws IOException {

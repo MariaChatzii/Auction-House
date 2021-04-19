@@ -14,7 +14,7 @@ class ItemTest {
         ArrayList<BidAction> bids1 = new ArrayList<>();
         bids1.add(new BidAction(7, 6, (float) 45));
         item1.setBids(bids1);
-        item1.setHeartBeatMessage(9);
+        item1.getResult().setCloseTime(9);
 
         //Test item2
         item2 = new Item("toaster_2", new SellAction(11, 4, (float) 25.30, 17));
@@ -24,7 +24,7 @@ class ItemTest {
         bids2.add(new BidAction(14, 6, (float) 35));
         bids2.add(new BidAction(16, 8, (float) 20));
         item2.setBids(bids2);
-        item2.setHeartBeatMessage(15);
+        item2.getResult().setCloseTime(16);
 
         //Test item3
         item3 = new Item("toaster_1", new SellAction(10,1, (float) 10.00,20));
@@ -33,7 +33,7 @@ class ItemTest {
         bids3.add(new BidAction(13,5, (float) 12.50));
         bids3.add(new BidAction(17,8, (float) 20));
         item3.setBids(bids3);
-        item3.setHeartBeatMessage(20);
+        item3.getResult().setCloseTime(20);
 
         //Test item4
         item4 = new Item("tv_1", new SellAction(15,8, (float) 250.00,20));
@@ -42,7 +42,7 @@ class ItemTest {
         bids4.add(new BidAction(19,3, (float) 200.00));
         bids4.add(new BidAction(21,3, (float) 300.00));
         item4.setBids(bids4);
-        item4.setHeartBeatMessage(20);
+        item4.getResult().setCloseTime(20);
 
         //Test item5
         item5 = new Item("wallet_1", new SellAction(10,1, (float) 10.06,20));
@@ -50,7 +50,7 @@ class ItemTest {
         bids5.add(new BidAction(13,4,15));
         bids5.add(new BidAction(16,3, (float) 9.50));
         item5.setBids(bids5);
-        item5.setHeartBeatMessage(17);
+        item5.getResult().setCloseTime(20);
 
         //Test item6
         item6 = new Item("bag_1", new SellAction(14,1, (float) 30.99,23));
@@ -60,7 +60,7 @@ class ItemTest {
         bids6.add(new BidAction(20,2, 45));
         bids6.add(new BidAction(21,7, 60));
         item6.setBids(bids6);
-        item6.setHeartBeatMessage(22);
+        item6.getResult().setCloseTime(22);
 
         //Test item7
         item7 = new Item("laptop_1", new SellAction(14,4, (float) 650,17));
@@ -68,7 +68,7 @@ class ItemTest {
         bids7.add(new BidAction(16,7,(float) 730));
         bids7.add(new BidAction(17,8, (float) 730));
         item7.setBids(bids7);
-        item7.setHeartBeatMessage(15);
+        item7.getResult().setCloseTime(17);
     }
 
     @Test
@@ -180,12 +180,10 @@ class ItemTest {
         item6.removeInvalidPriceBids();
 
         Result result1 = item6.getResult();
-        item6.setHeartBeatMessage(22);
         item6.setWinnerData();
 
         assertEquals(7, result1.getWinnerId());
         assertEquals("SOLD", result1.getStatus());
-        assertEquals(22, result1.getCloseTime());
 
         //winner is between valid bids only
         item5.getBids().sort(BidAction.sortByPrice);
@@ -193,12 +191,10 @@ class ItemTest {
         item5.removeInvalidPriceBids();
 
         Result result2 = item5.getResult();
-        item5.setHeartBeatMessage(17);
         item5.setWinnerData();
 
         assertEquals(4, result2.getWinnerId());
         assertEquals("SOLD", result2.getStatus());
-        assertEquals(17, result2.getCloseTime());
     }
 
     @Test
@@ -238,7 +234,6 @@ class ItemTest {
         Item itemTemp = new Item("tempCode_1", new SellAction(2, 6, (float) 10.50, 3));
 
         itemTemp.setBids(new ArrayList<>());
-        itemTemp.setHeartBeatMessage(3);
         itemTemp.removeInvalidTimeBids();
 
         itemTemp.setResultData();
@@ -275,7 +270,6 @@ class ItemTest {
         Item itemTemp = new Item("tv_03", sellingDataTemp);
         itemTemp.setBids(new ArrayList<>());
 
-        itemTemp.setHeartBeatMessage(18);
         itemTemp.setResult();
 
         assertEquals("tv_03", itemTemp.getResult().getItemCode());
@@ -301,5 +295,4 @@ class ItemTest {
         item6.getBids().sort(BidAction.sortByPrice);
         item7.getBids().sort(BidAction.sortByPrice);
     }
-
 }
