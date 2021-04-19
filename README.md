@@ -153,3 +153,8 @@ Bid&#39;s timestamp is considered as valid if it arrives after the start time of
 **Examples**
 
 Files with name format being &quot;input{number}.txt&quot; are some examples of input files and files with name format being &quot;input{number}Results.txt&quot; are their output files.
+
+
+**Testing**
+
+The file "inputTest.txt" is used in test class "OutputFileWriterTest".
